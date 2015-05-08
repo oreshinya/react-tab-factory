@@ -34,18 +34,21 @@ class TabFactory
   getSelectedIndex: ->
     @_selectedIndex
 
-  createTab: (child, selected) ->
+  createTab: (handler, selected) ->
 
     currentIndex = @_tabIndex
     @_selectedIndex = currentIndex if selected
 
     @_tabIndex++
 
-    <Tab index={currentIndex} classNames={@tabClassNames} factory={@}>
-      {child}
-    </Tab>
+    <Tab
+      index={currentIndex}
+      classNames={@tabClassNames}
+      factory={@}
+      handler={handler}
+    />
 
-  createPanel: (childHandler) ->
+  createPanel: (handler) ->
     currentIndex = @_panelIndex
     @_panelIndex++
 
@@ -53,7 +56,7 @@ class TabFactory
       index={currentIndex}
       className={@panelClassName}
       factory={@}
-      handler={childHandler}
+      handler={handler}
     />
 
 module.exports = TabFactory
