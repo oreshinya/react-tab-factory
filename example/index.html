@@ -5,16 +5,79 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <style>
-      .tab {
-        background: cyan; 
+      .tab-container {
+        display: -webkit-box;
       }
 
-      .active {
+      .tab {
+        width: 200px;
+        height: 50px;
+        background: cyan; 
+        border: solid 1px #B7B7B7;
+        margin: 5px;
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+      }
+
+      .tab.active {
         background: yellow;
       }
 
       .panel {
-        background: green;
+        border: solid 1px #B7B7B7;
+        width: 640px;
+        height: 300px;
+      }
+
+      .panel-content {
+        width: 100%;
+        height: 100%;
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+      }
+
+      .panel-content.nested {
+        display: -webkit-box;
+        -webkit-box-align: start;
+      }
+
+      .nested-tab-container {
+        width: 20%;
+        height: 100%;
+        border-right: solid 1px #B7B7B7;
+      }
+
+      .nested-panel-container {
+        width: 80%;
+        height: 100%;
+      }
+
+      .nested-tab {
+        height: 40px;
+        background: white;
+        border-bottom: solid 1px #B7B7B7;
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+      }
+
+      .nested-tab.active {
+        background: pink;
+      }
+
+      .nested-panel {
+        width: 100%;
+        height: 100%;
+      }
+
+      .nested-panel-content {
+        width: 100%;
+        height: 100%;
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
       }
     </style>
   </head>
