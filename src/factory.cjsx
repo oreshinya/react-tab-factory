@@ -1,6 +1,7 @@
 React = require "react"
 EventEmitter = require "eventemitter3"
 Tab = require "./components/tab.cjsx"
+Panel = require "./components/panel.cjsx"
 
 EVENT_NAME = "react-tab-factory:tab-changed"
 
@@ -14,6 +15,8 @@ class TabFactory
     @tabClassNames =
       normal: ""
       active: "active"
+
+    @panelClassName = ""
 
   addListener: (listener) ->
     @_emitter.on EVENT_NAME, listener
@@ -42,6 +45,15 @@ class TabFactory
       {child}
     </Tab>
 
-  createPanel: (child) ->
+  createPanel: (childHandler) ->
+    currentIndex = @_panelIndex
+    @_panelIndex++
+
+    <Panel
+      index={currentIndex}
+      className={@panelClassName}
+      factory={@}
+      handler={childHandler}
+    />
 
 module.exports = TabFactory
