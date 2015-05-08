@@ -29,7 +29,7 @@ Tab = React.createClass
 
   _onClick: (e) ->
     @props.factory.select @props.index
-    return
+    e.preventDefault()
 
   render: ->
     <div className={@_getClassName()} onClick={@_onClick}>
