@@ -9,10 +9,9 @@ Panel = React.createClass
 
   getInitialState: ->
     selectedIndex = @props.factory.getSelectedIndex()
-    {
-      selected: selectedIndex is @props.index
-      childComponent: null
-    }
+    state = selected: selectedIndex is @props.index
+    state.childComponent = <@props.handler /> if state.selected
+    state
 
   componentDidMount: ->
     @props.factory.addListener @_onFactoryUpdate
@@ -21,24 +20,18 @@ Panel = React.createClass
     @props.factory.removeListener @_onFactoryUpdate
 
   _onFactoryUpdate: (index) ->
-    selected = index is @props.index
-    @setState selected: selected
+    state = selected: index is @props.index
+    state.childComponent = <@props.handler /> if state.selected and !@state.childComponent?
+    @setState state
 
   _getStyle: ->
     display = "none"
     display = "block" if @state.selected
     {display: display}
 
-  _getChildComponent: ->
-    return @state.childComponent if @state.childComponent?
-    return null if !@state.selected
-    element = <@props.handler />
-    #@setState childComponent: element
-    element
-
   render: ->
     <div className={@props.className} style={@_getStyle()}>
-      {@_getChildComponent()}
+      {@state.childComponent}
     </div>
 
 module.exports = Panel
