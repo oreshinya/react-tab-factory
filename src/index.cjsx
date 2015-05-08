@@ -1,7 +1,7 @@
 React = require "react"
 EventEmitter = require "eventemitter3"
-Tab = require "./components/tab.cjsx"
-Panel = require "./components/panel.cjsx"
+Tab = require "./components/tab"
+Panel = require "./components/panel"
 
 EVENT_NAME = "react-tab-factory:tab-changed"
 
