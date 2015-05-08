@@ -2,10 +2,6 @@ React = require "react"
 
 TabFactory = require "../src/factory.cjsx"
 
-# initialize factory
-
-# initialize factory end
-
 # components
 tabMixin =
   _getStyle: ->
