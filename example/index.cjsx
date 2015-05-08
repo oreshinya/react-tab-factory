@@ -1,6 +1,6 @@
 React = require "react"
 
-TabFactory = require "../src/factory.cjsx"
+TabFactory = require "../src/index.cjsx"
 
 # components
 tabMixin =
