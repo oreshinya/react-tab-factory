@@ -100,7 +100,7 @@ factory.panelClassName = "panel"
 - **factory.createTab(handler, selected):**  
 Create tab. `handler` is ReactClass.  
 if selected is true, it is default tab.
-The default selected tab is first tab.
+The default selected tab is first tab.  
 The handler's props is passed `selected`.
 ```
 factory.createTab FirstTab
