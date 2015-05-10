@@ -1,6 +1,6 @@
 {
   "name": "react-tab-factory",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Simple tab component with React",
   "main": "lib/index.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "eventemitter3": "^1.0.2",
-    "react": "~0.13.2"
+    "react": "~0.13.0"
   },
   "devDependencies": {
     "browserify": "^10.1.3",
