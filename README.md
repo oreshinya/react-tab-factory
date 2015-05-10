@@ -1,5 +1,4 @@
-# ReactTabFactory
-**[WIP]**
+# **[WIP]!!!!!**ReactTabFactory
 Simple tab component with React.
 
 - **Mount with a delay**
