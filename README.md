@@ -1,18 +1,18 @@
 # **[WIP]!!!!!**ReactTabFactory
 Simple tab component with React.
 
-- **Mount with a delay**
+- **Mount with a delay**  
 The content panel is mounted, when the tab is clicked for the first time.
 
-- **Reuse mounted component**
+- **Reuse mounted component**  
 If you switch the tab,  
 the content panel those made previously is displayed in the state at that time.
 
-- **No styles**
+- **No styles**  
 This doesn't have design theme.  
 You can freely mark up css.
 
-- **Structure DOM freely**
+- **Structure DOM freely**  
 The tab and the panel does not need to be the same hierarchy.  
 You will be able to structure the tab or panel freely.
 
@@ -82,7 +82,7 @@ factory = new TabFactory()
 ```
 
 ### Configuration
-- **factory.tabClassNames:**
+- **factory.tabClassNames:**  
 Configure tab class name.
 ```
 factory.tabClassNames =
@@ -90,14 +90,14 @@ factory.tabClassNames =
   active: "tab active"
 ```
 
-- **factory.panelClassName:**
+- **factory.panelClassName:**  
 Configure panel class name.
 ```
 factory.panelClassName = "panel"
 ```
 
 ### Create Element
-- **factory.createTab(handler, selected):**
+- **factory.createTab(handler, selected):**  
 Create tab. `handler` is ReactClass.  
 if selected is true, it is default tab.
 The default selected tab is first tab.
@@ -106,14 +106,14 @@ The handler's props is passed `selected`.
 factory.createTab FirstTab
 ```
 
-- **factory.createPanel(handler):**
+- **factory.createPanel(handler):**  
 Create content panel. `handler` is ReactClass.
 ```
 factory.createPanel FirstPanel
 ```
 
 ## Example
-Go to `https://github.com/oreshinya/react-tab-factory/tree/master/example`!
+Go to https://github.com/oreshinya/react-tab-factory/tree/master/example !
 
 ## LICENSE
 MIT
