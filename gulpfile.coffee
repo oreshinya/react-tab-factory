@@ -8,4 +8,4 @@ gulp.task "buildExample", ->
     .transform "coffee-reactify"
     .bundle()
     .pipe source("bundle.js")
-    .pipe gulp.dest("./example")
+    .pipe gulp.dest("./example/build")
