@@ -1,2 +1,5 @@
 # ReactTabFactory
 WIP
+
+## LICENSE
+MIT
