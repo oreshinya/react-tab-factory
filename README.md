@@ -16,6 +16,8 @@ You can freely mark up css.
 The tab and the panel does not need to be the same hierarchy.  
 You will be able to structure the tab or panel freely.
 
+## Demo
+http://oreshinya.github.io/react-tab-factory/example/
 
 ## Installation
 
@@ -77,14 +79,14 @@ App = React.createClass
 ## API
 
 ### Instantiate
-```
+```coffee
 factory = new TabFactory()
 ```
 
 ### Configuration
 - **factory.tabClassNames:**  
 Configure tab class name.
-```
+```coffee
 factory.tabClassNames =
   normal: "tab"
   active: "tab active"
@@ -92,7 +94,7 @@ factory.tabClassNames =
 
 - **factory.panelClassName:**  
 Configure panel class name.
-```
+```coffee
 factory.panelClassName = "panel"
 ```
 
@@ -102,13 +104,13 @@ Create tab. `handler` is ReactClass.
 if selected is true, it is default tab.
 The default selected tab is first tab.  
 The handler's props is passed `selected`.
-```
+```coffee
 factory.createTab FirstTab
 ```
 
 - **factory.createPanel(handler):**  
 Create content panel. `handler` is ReactClass.
-```
+```coffee
 factory.createPanel FirstPanel
 ```
 
