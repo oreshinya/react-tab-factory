@@ -1,6 +1,6 @@
 {
   "name": "react-tab-factory",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Simple tab component with React",
   "main": "lib/index.js",
   "scripts": {

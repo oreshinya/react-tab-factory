@@ -38,10 +38,12 @@ tabMixin =
     {fontWeight: fontWeight}
 
 FirstTab = React.createClass
+  mixins: [tabMixin]
   render: ->
     <span style={@_getStyle()}>Tab 1</span>
 
 SecondTab = React.createClass
+  mixins: [tabMixin]
   render: ->
     <span style={@_getStyle()}>Tab 2</span>
 
