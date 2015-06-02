@@ -111,7 +111,7 @@ factory.createTab FirstTab
 ```
 
 - **factory.createPanel(handler, props):**  
-Create content panel. `handler` is ReactClass.
+Create content panel. `handler` is ReactClass.  
 The handler's props is passed `opts` that has passed props.
 ```coffee
 factory.createPanel FirstPanel
