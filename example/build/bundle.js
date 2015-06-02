@@ -20165,9 +20165,13 @@ Panel = React.createClass({
     opts: React.PropTypes.object
   },
   getInitialState: function() {
-    var selectedIndex;
-    selectedIndex = this.props.factory.getSelectedIndex();
-    return this._createStateWithNewIndex(selectedIndex);
+    var index, selected;
+    index = this.props.factory.getSelectedIndex();
+    selected = this._isSelected(index);
+    return {
+      selected: selected,
+      initialSelected: selected
+    };
   },
   componentDidMount: function() {
     return this.props.factory.addListener(this._onFactoryUpdate);
@@ -20175,22 +20179,19 @@ Panel = React.createClass({
   componentWillUnmount: function() {
     return this.props.factory.removeListener(this._onFactoryUpdate);
   },
-  _onFactoryUpdate: function(index) {
-    var state;
-    state = this._createStateWithNewIndex(index);
-    return this.setState(state);
+  _isSelected: function(index) {
+    return this.props.index === index;
   },
-  _createStateWithNewIndex: function(newIndex) {
-    var ref, state;
+  _onFactoryUpdate: function(index) {
+    var selected, state;
+    selected = this._isSelected(index);
     state = {
-      selected: newIndex === this.props.index
+      selected: selected
     };
-    if (state.selected && (((ref = this.state) != null ? ref.childComponent : void 0) == null)) {
-      state.childComponent = React.createElement(this.props.handler, {
-        "opts": this.props.opts
-      });
+    if (selected && !this.state.initialSelected) {
+      state.initialSelected = true;
     }
-    return state;
+    return this.setState(state);
   },
   _getStyle: function() {
     var display;
@@ -20206,7 +20207,9 @@ Panel = React.createClass({
     return React.createElement("div", {
       "className": this.props.className,
       "style": this._getStyle()
-    }, this.state.childComponent);
+    }, (this.state.initialSelected ? React.createElement(this.props.handler, {
+      "opts": this.props.opts
+    }) : void 0));
   }
 });
 
