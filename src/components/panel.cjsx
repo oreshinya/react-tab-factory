@@ -9,8 +9,12 @@ Panel = React.createClass
     opts: React.PropTypes.object
 
   getInitialState: ->
-    selectedIndex = @props.factory.getSelectedIndex()
-    @_createStateWithNewIndex selectedIndex
+    index = @props.factory.getSelectedIndex()
+    selected = @_isSelected index
+    {
+      selected: selected
+      initialSelected: selected
+    }
 
   componentDidMount: ->
     @props.factory.addListener @_onFactoryUpdate
@@ -18,15 +22,15 @@ Panel = React.createClass
   componentWillUnmount: ->
     @props.factory.removeListener @_onFactoryUpdate
 
-  _onFactoryUpdate: (index) ->
-    state = @_createStateWithNewIndex index
-    @setState state
+  _isSelected: (index) ->
+    @props.index is index
 
-  _createStateWithNewIndex: (newIndex) ->
-    state = selected: newIndex is @props.index
-    if state.selected and !@state?.childComponent?
-      state.childComponent = <@props.handler opts={@props.opts} />
-    state
+  _onFactoryUpdate: (index) ->
+    selected = @_isSelected index
+    state = selected: selected
+    if selected and !@state.initialSelected
+      state.initialSelected = true
+    @setState state
 
   _getStyle: ->
     display = "none"
@@ -35,7 +39,10 @@ Panel = React.createClass
 
   render: ->
     <div className={@props.className} style={@_getStyle()}>
-      {@state.childComponent}
+      {
+        if @state.initialSelected
+          <@props.handler opts={@props.opts} />
+      }
     </div>
 
 module.exports = Panel
