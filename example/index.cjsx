@@ -12,7 +12,7 @@ tabMixin =
 FirstTab = React.createClass
   mixins: [tabMixin]
   render: ->
-    <span style={@_getStyle()}>Tab 1</span>
+    <span style={@_getStyle()}>Tab 1 {@props.opts.data}</span>
 
 SecondTab = React.createClass
   mixins: [tabMixin]
@@ -26,7 +26,7 @@ ThirdTab = React.createClass
 
 FirstPanel = React.createClass
   render: ->
-    <div className="panel-content">Panel 1</div>
+    <div className="panel-content">Panel 1 {@props.opts.data}</div>
 
 SecondPanel = React.createClass
   render: ->
@@ -86,12 +86,12 @@ App = React.createClass
   render: ->
     <div id="app">
       <div className="tab-container">
-        {@state.factory.createTab FirstTab}
+        {@state.factory.createTab FirstTab, true, {data: 'tab data'}}
         {@state.factory.createTab SecondTab}
         {@state.factory.createTab ThirdTab}
       </div>
       <div className="panel-container">
-        {@state.factory.createPanel FirstPanel}
+        {@state.factory.createPanel FirstPanel, {data: 'panel data'}}
         {@state.factory.createPanel SecondPanel}
         {@state.factory.createPanel ThirdPanel}
       </div>

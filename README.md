@@ -101,17 +101,18 @@ factory.panelClassName = "panel"
 ```
 
 ### Create Element
-- **factory.createTab(handler, selected):**  
+- **factory.createTab(handler, selected, props):**  
 Create tab. `handler` is ReactClass.  
 if selected is true, it is default tab.
 The default selected tab is first tab.  
-The handler's props is passed `selected`.
+The handler's props is passed `selected` and `opts` that has passed props.
 ```coffee
 factory.createTab FirstTab
 ```
 
-- **factory.createPanel(handler):**  
-Create content panel. `handler` is ReactClass.
+- **factory.createPanel(handler, props):**  
+Create content panel. `handler` is ReactClass.  
+The handler's props is passed `opts` that has passed props.
 ```coffee
 factory.createPanel FirstPanel
 ```

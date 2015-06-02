@@ -34,7 +34,7 @@ class TabFactory
   getSelectedIndex: ->
     @_selectedIndex
 
-  createTab: (handler, selected) ->
+  createTab: (handler, selected, props) ->
 
     currentIndex = @_tabIndex
     @_selectedIndex = currentIndex if selected
@@ -46,9 +46,10 @@ class TabFactory
       classNames={@tabClassNames}
       factory={@}
       handler={handler}
+      opts={props}
     />
 
-  createPanel: (handler) ->
+  createPanel: (handler, props) ->
     currentIndex = @_panelIndex
     @_panelIndex++
 
@@ -57,6 +58,7 @@ class TabFactory
       className={@panelClassName}
       factory={@}
       handler={handler}
+      opts={props}
     />
 
 module.exports = TabFactory

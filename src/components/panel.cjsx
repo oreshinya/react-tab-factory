@@ -6,6 +6,7 @@ Panel = React.createClass
     className: React.PropTypes.string
     factory: React.PropTypes.object
     handler: React.PropTypes.func
+    opts: React.PropTypes.object
 
   getInitialState: ->
     selectedIndex = @props.factory.getSelectedIndex()
@@ -24,7 +25,7 @@ Panel = React.createClass
   _createStateWithNewIndex: (newIndex) ->
     state = selected: newIndex is @props.index
     if state.selected and !@state?.childComponent?
-      state.childComponent = <@props.handler />
+      state.childComponent = <@props.handler opts={@props.opts} />
     state
 
   _getStyle: ->

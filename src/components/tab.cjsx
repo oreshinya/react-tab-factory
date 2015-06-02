@@ -6,6 +6,7 @@ Tab = React.createClass
     classNames: React.PropTypes.object
     factory: React.PropTypes.object
     handler: React.PropTypes.func
+    opts: React.PropTypes.object
 
   getInitialState: ->
     selectedIndex = @props.factory.getSelectedIndex()
@@ -33,7 +34,7 @@ Tab = React.createClass
 
   render: ->
     <div className={@_getClassName()} onClick={@_onClick}>
-      <@props.handler selected={@state.selected} />
+      <@props.handler selected={@state.selected} opts={@props.opts} />
     </div>
 
 module.exports = Tab
