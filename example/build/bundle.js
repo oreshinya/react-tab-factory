@@ -1,9 +1,11 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var App, FirstNestedPanel, FirstNestedTab, FirstPanel, FirstTab, React, SecondNestedPanel, SecondNestedTab, SecondPanel, SecondTab, TabFactory, ThirdPanel, ThirdTab, tabMixin;
+var App, FirstNestedPanel, FirstNestedTab, FirstPanel, FirstTab, React, ReactTabFactory, SecondNestedPanel, SecondNestedTab, SecondPanel, SecondTab, TabFactory, ThirdPanel, ThirdTab, tabMixin;
 
 React = require("react");
 
-TabFactory = require("../src/index.cjsx");
+ReactTabFactory = require("../src/index.cjsx");
+
+TabFactory = ReactTabFactory.TabFactory;
 
 tabMixin = {
   _getStyle: function() {
@@ -155,7 +157,7 @@ window.addEventListener("load", function() {
 
 
 
-},{"../src/index.cjsx":161,"react":158}],2:[function(require,module,exports){
+},{"../src/index.cjsx":162,"react":158}],2:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -20152,6 +20154,32 @@ module.exports = warning;
 module.exports = require('./lib/React');
 
 },{"./lib/React":31}],159:[function(require,module,exports){
+var PanelContainer, React;
+
+React = require("react");
+
+PanelContainer = React.createClass({
+  propTypes: {
+    className: React.PropTypes.string
+  },
+  render: function() {
+    return React.createElement("div", {
+      "className": this.props.className,
+      "style": this._getStyle()
+    }, this.props.children);
+  },
+  _getStyle: function() {
+    return {
+      position: "relative"
+    };
+  }
+});
+
+module.exports = PanelContainer;
+
+
+
+},{"react":158}],160:[function(require,module,exports){
 var Panel, React;
 
 React = require("react");
@@ -20159,7 +20187,6 @@ React = require("react");
 Panel = React.createClass({
   propTypes: {
     index: React.PropTypes.number,
-    className: React.PropTypes.string,
     factory: React.PropTypes.object,
     handler: React.PropTypes.func,
     opts: React.PropTypes.object
@@ -20193,21 +20220,50 @@ Panel = React.createClass({
     }
     return this.setState(state);
   },
-  _getStyle: function() {
-    var display;
-    display = "none";
-    if (this.state.selected) {
-      display = "block";
-    }
-    return {
-      display: display
+  _getPerformantStyle: function() {
+    var style;
+    style = {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      backgroundColor: "#FFFFFF",
+      zIndex: -1
     };
+    if (this.state.selected) {
+      style.zIndex = 0;
+    }
+    return style;
+  },
+  _getNormalStyle: function() {
+    var style;
+    style = {
+      display: "none"
+    };
+    if (this.state.selected) {
+      style.display = "block";
+    }
+    return style;
+  },
+  _getStyle: function() {
+    if (this._isPerformant()) {
+      return this._getPerformantStyle();
+    } else {
+      return this._getNormalStyle();
+    }
+  },
+  _isPerformant: function() {
+    return this.props.factory.performant;
+  },
+  _getClassName: function() {
+    return this.props.factory.panelClassName;
   },
   render: function() {
     return React.createElement("div", {
-      "className": this.props.className,
+      "className": this._getClassName(),
       "style": this._getStyle()
     }, (this.state.initialSelected ? React.createElement(this.props.handler, {
+      "selected": this.state.selected,
       "opts": this.props.opts
     }) : void 0));
   }
@@ -20217,7 +20273,7 @@ module.exports = Panel;
 
 
 
-},{"react":158}],160:[function(require,module,exports){
+},{"react":158}],161:[function(require,module,exports){
 var React, Tab;
 
 React = require("react");
@@ -20225,7 +20281,6 @@ React = require("react");
 Tab = React.createClass({
   propTypes: {
     index: React.PropTypes.number,
-    classNames: React.PropTypes.object,
     factory: React.PropTypes.object,
     handler: React.PropTypes.func,
     opts: React.PropTypes.object
@@ -20250,11 +20305,16 @@ Tab = React.createClass({
       selected: selected
     });
   },
+  _getClassNameSet: function() {
+    return this.props.factory.tabClassNames;
+  },
   _getClassName: function() {
+    var set;
+    set = this._getClassNameSet();
     if (this.state.selected) {
-      return this.props.classNames.active;
+      return set.active;
     } else {
-      return this.props.classNames.normal;
+      return set.normal;
     }
   },
   _onClick: function(e) {
@@ -20276,7 +20336,15 @@ module.exports = Tab;
 
 
 
-},{"react":158}],161:[function(require,module,exports){
+},{"react":158}],162:[function(require,module,exports){
+module.exports = {
+  TabFactory: require("./tab-factory"),
+  PanelContainer: require("./components/panel-container")
+};
+
+
+
+},{"./components/panel-container":159,"./tab-factory":163}],163:[function(require,module,exports){
 var EVENT_NAME, EventEmitter, Panel, React, Tab, TabFactory;
 
 React = require("react");
@@ -20300,6 +20368,7 @@ TabFactory = (function() {
       active: "active"
     };
     this.panelClassName = "";
+    this.performant = false;
   }
 
   TabFactory.prototype.addListener = function(listener) {
@@ -20332,7 +20401,6 @@ TabFactory = (function() {
     this._tabIndex++;
     return React.createElement(Tab, {
       "index": currentIndex,
-      "classNames": this.tabClassNames,
       "factory": this,
       "handler": handler,
       "opts": props
@@ -20345,7 +20413,6 @@ TabFactory = (function() {
     this._panelIndex++;
     return React.createElement(Panel, {
       "index": currentIndex,
-      "className": this.panelClassName,
       "factory": this,
       "handler": handler,
       "opts": props
@@ -20360,4 +20427,4 @@ module.exports = TabFactory;
 
 
 
-},{"./components/panel":159,"./components/tab":160,"eventemitter3":3,"react":158}]},{},[1]);
+},{"./components/panel":160,"./components/tab":161,"eventemitter3":3,"react":158}]},{},[1]);

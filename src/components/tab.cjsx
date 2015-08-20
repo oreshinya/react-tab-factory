@@ -3,7 +3,6 @@ React = require "react"
 Tab = React.createClass
   propTypes:
     index: React.PropTypes.number
-    classNames: React.PropTypes.object
     factory: React.PropTypes.object
     handler: React.PropTypes.func
     opts: React.PropTypes.object
@@ -22,11 +21,16 @@ Tab = React.createClass
     selected = index is @props.index
     @setState selected: selected
 
+  _getClassNameSet: ->
+    @props.factory.tabClassNames
+
   _getClassName: ->
+    set = @_getClassNameSet()
+
     if @state.selected
-      @props.classNames.active
+      set.active
     else
-      @props.classNames.normal
+      set.normal
 
   _onClick: (e) ->
     @props.factory.select @props.index
