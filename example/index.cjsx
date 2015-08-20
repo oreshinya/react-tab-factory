@@ -1,6 +1,7 @@
 React = require "react"
 
-TabFactory = require "../src/index.cjsx"
+ReactTabFactory = require "../src/index.cjsx"
+TabFactory = ReactTabFactory.TabFactory
 
 # components
 tabMixin =
@@ -57,7 +58,7 @@ ThirdPanel = React.createClass
     factory.tabClassNames =
       normal: "nested-tab"
       active: "nested-tab active"
-    
+
     factory.panelClassName = "nested-panel"
     {factory: factory}
 
@@ -79,7 +80,7 @@ App = React.createClass
     factory.tabClassNames =
       normal: "tab"
       active: "tab active"
-    
+
     factory.panelClassName = "panel"
     {factory: factory}
 

@@ -1,12 +1,12 @@
 # ReactTabFactory
-Simple tab component with React.
+Simple tab component with React.  
 
 - **Mount with a delay**  
 The content panel is mounted, when the tab is clicked for the first time.
 
 - **Reuse mounted component**  
 If you switch the tab,  
-the content panel those made previously is displayed in the state at that time.
+the content panel those made previously is displayed in the state at that time.  
 
 - **No styles**  
 This doesn't have design theme.  
@@ -29,7 +29,8 @@ $ npm install --save react-tab-factory
 
 ```coffee
 
-TabFactory = require "react-tab-factory"
+ReactTabFactory = require "react-tab-factory"
+TabFactory = ReactTabFactory.TabFactory
 
 tabMixin =
   _getStyle: ->
@@ -61,7 +62,7 @@ App = React.createClass
     factory.tabClassNames =
       normal: "tab"
       active: "tab active"
-    
+
     factory.panelClassName = "panel"
     {factory: factory}
 
@@ -78,7 +79,53 @@ App = React.createClass
     </div>
 ```
 
+## Performant option
+If a panel has too many elements, switching tab will be very slow.  
+In case of it, you can set performant option to factory,  
+and create `PanelContainer` as panels parent.  
+
+```coffee
+ReactTabFactory = require "react-tab-factory"
+TabFactory = ReactTabFactory.TabFactory
+PanelContainer = ReactTabFactory.PanelContainer
+
+App = React.createClass
+  getInitialState: ->
+    factory = new TabFactory()
+    factory.tabClassNames =
+      normal: "tab"
+      active: "tab active"
+
+    factory.panelClassName = "panel"
+    factory.performant = true
+    {factory: factory}
+
+  render: ->
+    <div id="app">
+      <div className="tab-container">
+        {@state.factory.createTab FirstTab}
+        {@state.factory.createTab SecondTab}
+      </div>
+      <PanelContainer className="panel-container">
+        {@state.factory.createPanel FirstPanel}
+        {@state.factory.createPanel SecondPanel}
+      </PanelContainer>
+    </div>
+```
+
+**But use performant option carefully.**  
+If performant option is false, the factory switches tab with css `display` property.  
+If performant option is true, to reduce rendering and painting,  
+the factory switches tab with css `position: absolute` and `z-index`.  
+These may lead to side effects.
+
 ## API
+### Property
+```coffee
+ReactTabFactory = require "react-tab-factory"
+TabFactory = ReactTabFactory.TabFactory
+PanelContainer = ReactTabFactory.PanelContainer
+```
 
 ### Instantiate
 ```coffee
@@ -100,10 +147,15 @@ Configure panel class name.
 factory.panelClassName = "panel"
 ```
 
+- **factory.performant**  
+```coffee
+factory.performant = true # default is false
+```
+
 ### Create Element
 - **factory.createTab(handler, selected, props):**  
 Create tab. `handler` is ReactClass.  
-if selected is true, it is default tab.
+if selected is true, it is default tab.  
 The default selected tab is first tab.  
 The handler's props is passed `selected` and `opts` that has passed props.
 ```coffee

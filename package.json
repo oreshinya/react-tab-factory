@@ -1,6 +1,6 @@
 {
   "name": "react-tab-factory",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Simple tab component with React",
   "main": "lib/index.js",
   "scripts": {
@@ -14,7 +14,9 @@
   "author": "Shinya Takahashi",
   "license": "MIT",
   "dependencies": {
-    "eventemitter3": "^1.0.2",
+    "eventemitter3": "^1.0.2"
+  },
+  "peerDependencies": {
     "react": "~0.13.0"
   },
   "devDependencies": {
