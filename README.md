@@ -1,19 +1,19 @@
 # ReactTabFactory
 Simple tab component with React.
 
-- **Mount with a delay**  
+- **Mount with a delay**
 The content panel is mounted, when the tab is clicked for the first time.
 
-- **Reuse mounted component**  
-If you switch the tab,  
+- **Reuse mounted component**
+If you switch the tab,
 the content panel those made previously is displayed in the state at that time.
 
-- **No styles**  
-This doesn't have design theme.  
+- **No styles**
+This doesn't have design theme.
 You can freely mark up css.
 
-- **Structure DOM freely**  
-The tab and the panel does not need to be the same hierarchy.  
+- **Structure DOM freely**
+The tab and the panel does not need to be the same hierarchy.
 You will be able to structure the tab or panel freely.
 
 ## Demo
@@ -29,7 +29,8 @@ $ npm install --save react-tab-factory
 
 ```coffee
 
-TabFactory = require "react-tab-factory"
+ReactTabFactory = require "react-tab-factory"
+TabFactory = ReactTabFactory.TabFactory
 
 tabMixin =
   _getStyle: ->
@@ -61,7 +62,7 @@ App = React.createClass
     factory.tabClassNames =
       normal: "tab"
       active: "tab active"
-    
+
     factory.panelClassName = "panel"
     {factory: factory}
 
@@ -78,7 +79,55 @@ App = React.createClass
     </div>
 ```
 
+## Performant option
+If a panel has too meny elements, Switching tab will be very slow.
+In case of it, You can set performant option to factory,
+and create PanelContainer as panels parent.
+
+```
+ReactTabFactory = require "react-tab-factory"
+TabFactory = ReactTabFactory.TabFactory
+PanelContainer = ReactTabFactory.PanelContainer
+
+factory = new TabFactory()
+factory.performant = true
+
+App = React.createClass
+  getInitialState: ->
+    factory = new TabFactory()
+    factory.tabClassNames =
+      normal: "tab"
+      active: "tab active"
+
+    factory.panelClassName = "panel"
+    {factory: factory}
+
+  render: ->
+    <div id="app">
+      <div className="tab-container">
+        {@state.factory.createTab FirstTab}
+        {@state.factory.createTab SecondTab}
+      </div>
+      <PanelContainer className="panel-container">
+        {@state.factory.createPanel FirstPanel}
+        {@state.factory.createPanel SecondPanel}
+      </div>
+    </PanelContainer>
+```
+
+**But use performant option carefully.**
+If performant option is false, the factory switches tab with css `display` property.
+If performant option is true, to reduce rendering and painting,
+the factory switches tab with css `position: absolute` and `z-index`.
+These may lead to side effects.
+
 ## API
+### Property
+```coffee
+ReactTabFactory = require "react-tab-factory"
+TabFactory = ReactTabFactory.TabFactory
+PanelContainer = ReactTabFactory.PanelContainer
+```
 
 ### Instantiate
 ```coffee
@@ -86,7 +135,7 @@ factory = new TabFactory()
 ```
 
 ### Configuration
-- **factory.tabClassNames:**  
+- **factory.tabClassNames:**
 Configure tab class name.
 ```coffee
 factory.tabClassNames =
@@ -94,24 +143,29 @@ factory.tabClassNames =
   active: "tab active"
 ```
 
-- **factory.panelClassName:**  
+- **factory.panelClassName:**
 Configure panel class name.
 ```coffee
 factory.panelClassName = "panel"
 ```
 
+- **factory.performant**
+```coffee
+factory.performant = true # default is false
+```
+
 ### Create Element
-- **factory.createTab(handler, selected, props):**  
-Create tab. `handler` is ReactClass.  
+- **factory.createTab(handler, selected, props):**
+Create tab. `handler` is ReactClass.
 if selected is true, it is default tab.
-The default selected tab is first tab.  
+The default selected tab is first tab.
 The handler's props is passed `selected` and `opts` that has passed props.
 ```coffee
 factory.createTab FirstTab
 ```
 
-- **factory.createPanel(handler, props):**  
-Create content panel. `handler` is ReactClass.  
+- **factory.createPanel(handler, props):**
+Create content panel. `handler` is ReactClass.
 The handler's props is passed `opts` that has passed props.
 ```coffee
 factory.createPanel FirstPanel
