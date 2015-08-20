@@ -3,7 +3,6 @@ React = require "react"
 Panel = React.createClass
   propTypes:
     index: React.PropTypes.number
-    className: React.PropTypes.string
     factory: React.PropTypes.object
     handler: React.PropTypes.func
     opts: React.PropTypes.object
@@ -32,16 +31,46 @@ Panel = React.createClass
       state.initialSelected = true
     @setState state
 
+  _getPerformantStyle: ->
+    style =
+      position: "absolute"
+      top: 0
+      left: 0
+      width: "100%"
+      backgroundColor: "#FFFFFF"
+      zIndex: -1
+
+    if @state.selected
+      style.zIndex = 0
+
+    style
+
+  _getNormalStyle: ->
+    style =
+      display: "none"
+
+    if @state.selected
+      style.display = "block"
+
+    style
+
   _getStyle: ->
-    display = "none"
-    display = "block" if @state.selected
-    {display: display}
+    if @_isPerformant()
+      @_getPerformantStyle()
+    else
+      @_getNormalStyle()
+
+  _isPerformant: ->
+    @props.factory.performant
+
+  _getClassName: ->
+    @props.factory.panelClassName
 
   render: ->
-    <div className={@props.className} style={@_getStyle()}>
+    <div className={@_getClassName()} style={@_getStyle()}>
       {
         if @state.initialSelected
-          <@props.handler opts={@props.opts} />
+          <@props.handler selected={@state.selected} opts={@props.opts} />
       }
     </div>
 
