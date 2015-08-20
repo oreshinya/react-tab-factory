@@ -89,9 +89,6 @@ ReactTabFactory = require "react-tab-factory"
 TabFactory = ReactTabFactory.TabFactory
 PanelContainer = ReactTabFactory.PanelContainer
 
-factory = new TabFactory()
-factory.performant = true
-
 App = React.createClass
   getInitialState: ->
     factory = new TabFactory()
@@ -100,6 +97,7 @@ App = React.createClass
       active: "tab active"
 
     factory.panelClassName = "panel"
+    factory.performant = true
     {factory: factory}
 
   render: ->
@@ -111,8 +109,8 @@ App = React.createClass
       <PanelContainer className="panel-container">
         {@state.factory.createPanel FirstPanel}
         {@state.factory.createPanel SecondPanel}
-      </div>
-    </PanelContainer>
+      </PanelContainer>
+    </div>
 ```
 
 **But use performant option carefully.**  
