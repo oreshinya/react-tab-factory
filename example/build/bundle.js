@@ -20231,7 +20231,7 @@ Panel = React.createClass({
       zIndex: -1
     };
     if (this.state.selected) {
-      style.zIndex = 0;
+      style.zIndex = "auto";
     }
     return style;
   },
