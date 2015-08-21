@@ -41,7 +41,7 @@ Panel = React.createClass
       zIndex: -1
 
     if @state.selected
-      style.zIndex = 0
+      style.zIndex = "auto"
 
     style
 
