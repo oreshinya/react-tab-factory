@@ -36,10 +36,11 @@ class TabFactory
   getSelectedIndex: ->
     @_selectedIndex
 
-  createTab: (handler, selected, props) ->
+  createTab: (handler, props, options) ->
+    options = {} if !options?
 
     currentIndex = @_tabIndex
-    @_selectedIndex = currentIndex if selected
+    @_selectedIndex = currentIndex if options.selected
 
     @_tabIndex++
 
@@ -50,7 +51,9 @@ class TabFactory
       opts={props}
     />
 
-  createPanel: (handler, props) ->
+  createPanel: (handler, props, options) ->
+    options = {} if !options?
+
     currentIndex = @_panelIndex
     @_panelIndex++
 
@@ -59,6 +62,7 @@ class TabFactory
       factory={@}
       handler={handler}
       opts={props}
+      preMount={options.preMount}
     />
 
 module.exports = TabFactory
