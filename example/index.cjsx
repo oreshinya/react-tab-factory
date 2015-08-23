@@ -66,7 +66,7 @@ ThirdPanel = React.createClass
     <div className="panel-content nested">
       <div className="nested-tab-container">
         {@state.factory.createTab FirstNestedTab}
-        {@state.factory.createTab SecondNestedTab}
+        {@state.factory.createTab SecondNestedTab, null, selected: true}
       </div>
       <div className="nested-panel-container">
         {@state.factory.createPanel FirstNestedPanel}
@@ -87,13 +87,13 @@ App = React.createClass
   render: ->
     <div id="app">
       <div className="tab-container">
-        {@state.factory.createTab FirstTab, true, {data: 'tab data'}}
+        {@state.factory.createTab FirstTab, {data: 'tab data'}}
         {@state.factory.createTab SecondTab}
         {@state.factory.createTab ThirdTab}
       </div>
       <div className="panel-container">
         {@state.factory.createPanel FirstPanel, {data: 'panel data'}}
-        {@state.factory.createPanel SecondPanel}
+        {@state.factory.createPanel SecondPanel, null, preMount: true}
         {@state.factory.createPanel ThirdPanel}
       </div>
     </div>

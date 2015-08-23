@@ -6,6 +6,7 @@ Panel = React.createClass
     factory: React.PropTypes.object
     handler: React.PropTypes.func
     opts: React.PropTypes.object
+    preMount: React.PropTypes.bool
 
   getInitialState: ->
     index = @props.factory.getSelectedIndex()
@@ -20,6 +21,14 @@ Panel = React.createClass
 
   componentWillUnmount: ->
     @props.factory.removeListener @_onFactoryUpdate
+
+  render: ->
+    <div className={@_getClassName()} style={@_getStyle()}>
+      {
+        if @_shouldRenderContent()
+          <@props.handler selected={@state.selected} opts={@props.opts} />
+      }
+    </div>
 
   _isSelected: (index) ->
     @props.index is index
@@ -66,12 +75,7 @@ Panel = React.createClass
   _getClassName: ->
     @props.factory.panelClassName
 
-  render: ->
-    <div className={@_getClassName()} style={@_getStyle()}>
-      {
-        if @state.initialSelected
-          <@props.handler selected={@state.selected} opts={@props.opts} />
-      }
-    </div>
+  _shouldRenderContent: ->
+    @props.preMount or @state.initialSelected
 
 module.exports = Panel
