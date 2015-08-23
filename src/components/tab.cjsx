@@ -17,6 +17,11 @@ Tab = React.createClass
   componentWillUnmount: ->
     @props.factory.removeListener @_onFactoryUpdate
 
+  render: ->
+    <div className={@_getClassName()} onClick={@_onClick}>
+      <@props.handler selected={@state.selected} opts={@props.opts} />
+    </div>
+
   _onFactoryUpdate: (index) ->
     selected = index is @props.index
     @setState selected: selected
@@ -35,10 +40,5 @@ Tab = React.createClass
   _onClick: (e) ->
     @props.factory.select @props.index
     e.preventDefault()
-
-  render: ->
-    <div className={@_getClassName()} onClick={@_onClick}>
-      <@props.handler selected={@state.selected} opts={@props.opts} />
-    </div>
 
 module.exports = Tab

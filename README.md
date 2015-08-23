@@ -148,23 +148,25 @@ factory.panelClassName = "panel"
 ```
 
 - **factory.performant**  
+Configure to switch tab faster.
 ```coffee
 factory.performant = true # default is false
 ```
 
 ### Create Element
-- **factory.createTab(handler, selected, props):**  
+- **factory.createTab(handler, props, options):**  
 Create tab. `handler` is ReactClass.  
-if selected is true, it is default tab.  
-The default selected tab is first tab.  
-The handler's props is passed `selected` and `opts` that has passed props.
+The handler's props is passed `selected` and `opts` that has passed props.  
+If `options.selected` is true, it will be default tab.  
+The default selected tab is first tab.
 ```coffee
 factory.createTab FirstTab
 ```
 
-- **factory.createPanel(handler, props):**  
+- **factory.createPanel(handler, props, options):**  
 Create content panel. `handler` is ReactClass.  
-The handler's props is passed `opts` that has passed props.
+The handler's props is passed `selected` and `opts` that has passed props.  
+If `options.preMount` is true, it will be rendered before selecting tab.
 ```coffee
 factory.createPanel FirstPanel
 ```

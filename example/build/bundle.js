@@ -115,7 +115,9 @@ ThirdPanel = React.createClass({
       "className": "panel-content nested"
     }, React.createElement("div", {
       "className": "nested-tab-container"
-    }, this.state.factory.createTab(FirstNestedTab), this.state.factory.createTab(SecondNestedTab)), React.createElement("div", {
+    }, this.state.factory.createTab(FirstNestedTab), this.state.factory.createTab(SecondNestedTab, null, {
+      selected: true
+    })), React.createElement("div", {
       "className": "nested-panel-container"
     }, this.state.factory.createPanel(FirstNestedPanel), this.state.factory.createPanel(SecondNestedPanel)));
   }
@@ -139,13 +141,15 @@ App = React.createClass({
       "id": "app"
     }, React.createElement("div", {
       "className": "tab-container"
-    }, this.state.factory.createTab(FirstTab, true, {
+    }, this.state.factory.createTab(FirstTab, {
       data: 'tab data'
     }), this.state.factory.createTab(SecondTab), this.state.factory.createTab(ThirdTab)), React.createElement("div", {
       "className": "panel-container"
     }, this.state.factory.createPanel(FirstPanel, {
       data: 'panel data'
-    }), this.state.factory.createPanel(SecondPanel), this.state.factory.createPanel(ThirdPanel)));
+    }), this.state.factory.createPanel(SecondPanel, null, {
+      preMount: true
+    }), this.state.factory.createPanel(ThirdPanel)));
   }
 });
 
@@ -20189,7 +20193,8 @@ Panel = React.createClass({
     index: React.PropTypes.number,
     factory: React.PropTypes.object,
     handler: React.PropTypes.func,
-    opts: React.PropTypes.object
+    opts: React.PropTypes.object,
+    preMount: React.PropTypes.bool
   },
   getInitialState: function() {
     var index, selected;
@@ -20205,6 +20210,15 @@ Panel = React.createClass({
   },
   componentWillUnmount: function() {
     return this.props.factory.removeListener(this._onFactoryUpdate);
+  },
+  render: function() {
+    return React.createElement("div", {
+      "className": this._getClassName(),
+      "style": this._getStyle()
+    }, (this._shouldRenderContent() ? React.createElement(this.props.handler, {
+      "selected": this.state.selected,
+      "opts": this.props.opts
+    }) : void 0));
   },
   _isSelected: function(index) {
     return this.props.index === index;
@@ -20258,14 +20272,8 @@ Panel = React.createClass({
   _getClassName: function() {
     return this.props.factory.panelClassName;
   },
-  render: function() {
-    return React.createElement("div", {
-      "className": this._getClassName(),
-      "style": this._getStyle()
-    }, (this.state.initialSelected ? React.createElement(this.props.handler, {
-      "selected": this.state.selected,
-      "opts": this.props.opts
-    }) : void 0));
+  _shouldRenderContent: function() {
+    return this.props.preMount || this.state.initialSelected;
   }
 });
 
@@ -20298,6 +20306,15 @@ Tab = React.createClass({
   componentWillUnmount: function() {
     return this.props.factory.removeListener(this._onFactoryUpdate);
   },
+  render: function() {
+    return React.createElement("div", {
+      "className": this._getClassName(),
+      "onClick": this._onClick
+    }, React.createElement(this.props.handler, {
+      "selected": this.state.selected,
+      "opts": this.props.opts
+    }));
+  },
   _onFactoryUpdate: function(index) {
     var selected;
     selected = index === this.props.index;
@@ -20320,15 +20337,6 @@ Tab = React.createClass({
   _onClick: function(e) {
     this.props.factory.select(this.props.index);
     return e.preventDefault();
-  },
-  render: function() {
-    return React.createElement("div", {
-      "className": this._getClassName(),
-      "onClick": this._onClick
-    }, React.createElement(this.props.handler, {
-      "selected": this.state.selected,
-      "opts": this.props.opts
-    }));
   }
 });
 
@@ -20392,10 +20400,13 @@ TabFactory = (function() {
     return this._selectedIndex;
   };
 
-  TabFactory.prototype.createTab = function(handler, selected, props) {
+  TabFactory.prototype.createTab = function(handler, props, options) {
     var currentIndex;
+    if (options == null) {
+      options = {};
+    }
     currentIndex = this._tabIndex;
-    if (selected) {
+    if (options.selected) {
       this._selectedIndex = currentIndex;
     }
     this._tabIndex++;
@@ -20407,15 +20418,19 @@ TabFactory = (function() {
     });
   };
 
-  TabFactory.prototype.createPanel = function(handler, props) {
+  TabFactory.prototype.createPanel = function(handler, props, options) {
     var currentIndex;
+    if (options == null) {
+      options = {};
+    }
     currentIndex = this._panelIndex;
     this._panelIndex++;
     return React.createElement(Panel, {
       "index": currentIndex,
       "factory": this,
       "handler": handler,
-      "opts": props
+      "opts": props,
+      "preMount": options.preMount
     });
   };
 
